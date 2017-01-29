@@ -16,6 +16,7 @@ import Svg from "../shared/Svg";
 import ImPropTypes from "react-immutable-proptypes";
 import { formatKeyShortcut } from "../../utils/text";
 import actions from "../../actions";
+import isEnabled from "devtools-config";
 import "./CommandBar.css";
 
 const { Services: { appinfo }} = require("devtools-modules");
@@ -255,7 +256,7 @@ const CommandBar = createClass({
         { className: "command-bar" },
         this.renderPauseButton(),
         this.renderStepButtons(),
-        this.renderPauseOnExceptions()
+        isEnabled("inlineExceptionPausing") ? null : this.renderPauseOnExceptions()
       )
     );
   }
