@@ -113,3 +113,16 @@ If we do, change to a class target.
 .breakpoints-list summary {
   padding: 8px;
 }
+
+.breakpoints-list .exception-mode-trigger {
+  display: flex;
+  justify-content: flex-start;
+  padding: 6px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}

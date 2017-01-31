@@ -36,7 +36,11 @@
       "enabled": false
     },
     "inlineExceptionPausing": {
-      "label": "Inline Exception Pausing",
+      "label": "Pause exceptions via inline menu",
+      "enabled": false
+    },
+    "dropdownExceptionPausing": {
+      "label": "Pause exceptions via dropdown menu",
       "enabled": false
     }
   },

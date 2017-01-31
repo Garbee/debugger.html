@@ -17,6 +17,7 @@ import { endTruncateStr } from "../../utils/utils";
 import { basename } from "../../utils/path";
 import CloseButton from "../shared/Button/Close";
 import isEnabled from "devtools-config";
+import showMenu from "../shared/menu";
 
 import "./Breakpoints.css";
 
@@ -136,6 +137,28 @@ const Breakpoints = createClass({
     );
   },
 
+  renderExceptionDropdown() {
+    const _createToggle = (fromMode) => {
+      const currentMode = this.props.currentExceptionPauseMode;
+      return {
+        value: fromMode.mode,
+        label: fromMode.label,
+        disabled: currentMode.mode === fromMode.mode,
+        click: () => {
+          this.props.pauseOnExceptions(fromMode.shouldPause, fromMode.shouldIgnoreCaught);
+        }
+      };
+    };
+
+    const onClick = (event) => {
+      showMenu(event, this.props.exceptionPauseModes.map(_createToggle));
+    };
+    return dom.button({
+      onClick,
+      className: "exception-mode-trigger"
+    }, "Pause on...");
+  },
+
   renderBreakpoint(breakpoint) {
     const snippet = breakpoint.text || "";
     const locationId = breakpoint.locationId;
@@ -177,8 +200,12 @@ const Breakpoints = createClass({
 
   render() {
     const { breakpoints } = this.props;
+
+    const showDropdownExceptions = isEnabled("dropdownExceptionPausing") && ! isEnabled("inlineExceptionPausing");
+
     return dom.div(
       { className: "pane breakpoints-list" },
+      showDropdownExceptions ? this.renderExceptionDropdown() : null,
       isEnabled("inlineExceptionPausing") ? this.renderExceptionBreakpoints() : null,
       (breakpoints.size === 0 ?
        dom.div({ className: "pane-info" }, L10N.getStr("breakpoints.none")) :
