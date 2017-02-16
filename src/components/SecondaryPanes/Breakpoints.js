@@ -16,7 +16,7 @@ import { makeLocationId } from "../../reducers/breakpoints";
 import { endTruncateStr } from "../../utils/utils";
 import { basename } from "../../utils/path";
 import CloseButton from "../shared/Button/Close";
-import isEnabled from "devtools-config";
+import { isEnabled } from "devtools-config";
 import showMenu from "../shared/menu";
 
 import "./Breakpoints.css";
