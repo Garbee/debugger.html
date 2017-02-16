@@ -251,7 +251,10 @@ const CommandBar = createClass({
   },
 
   render() {
-    const shouldNotShowExceptions = isEnabled("inlineExceptionPausing") || isEnabled("dropdownExceptionPausing");
+    const shouldNotShowExceptions = (
+      isEnabled("inlineExceptionPausing") ||
+      isEnabled("dropdownExceptionPausing")
+    );
     return (
       dom.div(
         { className: "command-bar" },

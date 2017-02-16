@@ -69,7 +69,11 @@ const Breakpoints = createClass({
 
   shouldComponentUpdate(nextProps, nextState) {
     const { breakpoints, currentExceptionPauseMode } = this.props;
-    return breakpoints !== nextProps.breakpoints || currentExceptionPauseMode !== nextProps.currentExceptionPauseMode;
+    const breakpointsModified = breakpoints !== nextProps.breakpoints;
+    const exceptionModeChanged = (
+      currentExceptionPauseMode !== nextProps.currentExceptionPauseMode
+    );
+    return breakpointsModified || exceptionModeChanged;
   },
 
   handleCheckbox(breakpoint) {
@@ -113,7 +117,7 @@ const Breakpoints = createClass({
       return dom.label({
         className: "breakpoint",
         key: fromMode.mode
-        },
+      },
         dom.input({
           type: "radio",
           name: "exception-mode",
@@ -145,7 +149,9 @@ const Breakpoints = createClass({
         label: fromMode.label,
         disabled: currentMode.mode === fromMode.mode,
         click: () => {
-          this.props.pauseOnExceptions(fromMode.shouldPause, fromMode.shouldIgnoreCaught);
+          this.props.pauseOnExceptions(
+            fromMode.shouldPause, fromMode.shouldIgnoreCaught
+          );
         }
       };
     };
@@ -201,12 +207,17 @@ const Breakpoints = createClass({
   render() {
     const { breakpoints } = this.props;
 
-    const showDropdownExceptions = isEnabled("dropdownExceptionPausing") && ! isEnabled("inlineExceptionPausing");
+    const renderInline = isEnabled("inlineExceptionPausing");
+
+    const showDropdownExceptions = (
+      isEnabled("dropdownExceptionPausing") &&
+      !renderInline
+    );
 
     return dom.div(
       { className: "pane breakpoints-list" },
       showDropdownExceptions ? this.renderExceptionDropdown() : null,
-      isEnabled("inlineExceptionPausing") ? this.renderExceptionBreakpoints() : null,
+      renderInline ? this.renderExceptionBreakpoints() : null,
       (breakpoints.size === 0 ?
        dom.div({ className: "pane-info" }, L10N.getStr("breakpoints.none")) :
        breakpoints.valueSeq().map(this.renderBreakpoint))
